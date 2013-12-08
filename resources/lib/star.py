@@ -23,10 +23,12 @@ import xbmc
 import xbmcgui
 import random
 
-maxCenterDistance = 5
-maxSize = 4;
-VmaxX = 5
-VmaxY = 5
+maxCenterMult = 20
+maxSize = 4
+Vmax = 2
+Vmin = 0.8
+
+maxGrowth = 1.001;
 
 class Star():
   
@@ -36,7 +38,7 @@ class Star():
       
       self.reset()
       
-      self.image = xbmcgui.ControlImage(int(self.x),int(self.y),self.size,self.size, gui.image_dir+'star.png', 0)
+      self.image = xbmcgui.ControlImage(int(self.x),int(self.y),int(self.size),int(self.size), gui.image_dir+'star.png', 0)
       self.image.setVisible(True)
       #self.allImages.append(image)
       gui.addControl(self.image)
@@ -44,12 +46,25 @@ class Star():
     def reset(self):
       self.size = random.randint(1, maxSize)
       
-      self.vx = (random.random() - 0.5) * 2*VmaxX
-      self.vy = (random.random() - 0.5) * 2*VmaxY
+      self.v = (((random.random() * (Vmax-Vmin))+Vmin))
       
+      
+      self.fractionX = random.random()
+      
+      self.vx = self.v*self.fractionX
+      self.vy = self.v*(1-self.fractionX)
+      
+      self.sign1 = random.random()
+      if (self.sign1 > 0.5):
+	self.vx = self.vx * (-1)
+      self.sign2 = random.random()
+      if (self.sign2 > 0.5):
+	self.vy = self.vy * (-1)
+      
+      self.growth = (random.random() * (maxGrowth-1))+1
 
-      self.x = self.gui.centerX + self.vx
-      self.y = self.gui.centerY + self.vy
+      self.x = self.gui.centerX + random.randint(1, maxCenterMult)*self.vx
+      self.y = self.gui.centerY + random.randint(1, maxCenterMult)*self.vy
       
     def removeControl(self):
         self.gui.removeControl(self.image)
@@ -63,3 +78,10 @@ class Star():
           self.x = self.x + self.vx
           self.y = self.y + self.vy
           self.image.setPosition(int(self.x), int(self.y))
+          
+          self.size = float(self.size * self.growth)
+          self.image.setWidth(int(self.size))
+          self.image.setHeight(int(self.size))
+          
+          self.vx = self.vx*self.growth*1.05
+          self.vy = self.vy*self.growth*1.05
