@@ -43,7 +43,7 @@ class Star():
       self.y = self.gui.centerY + random.randint(1, 400)*self.vy
       
       self.image = xbmcgui.ControlImage(int(self.x),int(self.y),int(self.size),int(self.size), gui.image_dir+'star.png', 0)
-      self.image.setColorDiffuse('0x' + self.brightness + ' FFFFFFF')
+      #self.image.setColorDiffuse('0x' + self.brightness + ' FFFFFFF')
       self.image.setVisible(True)
       #self.allImages.append(image)
       gui.addControl(self.image)
@@ -92,7 +92,7 @@ class Star():
           
           self.vx = self.vx*self.growth*1.01
           self.vy = self.vy*self.growth*1.01
-          
+          oldBrightness = self.brightness
           if (self.size < 1.4):
 	    self.brightness = '4'
 	  elif (self.size < 1.6):
@@ -117,6 +117,6 @@ class Star():
 	    self.brightness = 'E'
 	  else:
 	    self.brightness = 'F'
-	 
-	 
-          self.image.setColorDiffuse('0x' + self.brightness + 'FFFFFFF')
+	    
+	  if (self.brightness != oldBrightness):
+	    self.image.setColorDiffuse('0x' + self.brightness + 'FFFFFFF')
