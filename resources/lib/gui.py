@@ -32,7 +32,7 @@ addon_name = addon.getAddonInfo('name')
 addon_path = addon.getAddonInfo('path')
 image_dir = xbmc.translatePath( os.path.join( addon_path, 'resources', 'skins', 'default', 'media' ,'').encode("utf-8") ).decode("utf-8")
 
-numberOfStars = 100
+numberOfStars = 80
 
 scriptId   = 'screensaver.starfield'
 

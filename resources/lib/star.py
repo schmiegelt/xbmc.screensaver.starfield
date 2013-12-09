@@ -23,12 +23,13 @@ import xbmc
 import xbmcgui
 import random
 
-maxCenterMult = 20
+maxCenterMult = 50
 maxSize = 4
-Vmax = 2
-Vmin = 0.8
+Vmax = 1.4
+Vmin = 0.5
 
-maxGrowth = 1.001;
+
+maxGrowth = 1.005;
 
 class Star():
   
@@ -38,7 +39,11 @@ class Star():
       
       self.reset()
       
+      self.x = self.gui.centerX + random.randint(1, 400)*self.vx
+      self.y = self.gui.centerY + random.randint(1, 400)*self.vy
+      
       self.image = xbmcgui.ControlImage(int(self.x),int(self.y),int(self.size),int(self.size), gui.image_dir+'star.png', 0)
+      self.image.setColorDiffuse('0x' + self.brightness + ' FFFFFFF')
       self.image.setVisible(True)
       #self.allImages.append(image)
       gui.addControl(self.image)
@@ -63,8 +68,10 @@ class Star():
       
       self.growth = (random.random() * (maxGrowth-1))+1
 
-      self.x = self.gui.centerX + random.randint(1, maxCenterMult)*self.vx
-      self.y = self.gui.centerY + random.randint(1, maxCenterMult)*self.vy
+      self.x = self.gui.centerX + random.randint(10, maxCenterMult)*self.vx
+      self.y = self.gui.centerY + random.randint(10, maxCenterMult)*self.vy
+      
+      self.brightness = '4'
       
     def removeControl(self):
         self.gui.removeControl(self.image)
@@ -83,5 +90,33 @@ class Star():
           self.image.setWidth(int(self.size))
           self.image.setHeight(int(self.size))
           
-          self.vx = self.vx*self.growth*1.05
-          self.vy = self.vy*self.growth*1.05
+          self.vx = self.vx*self.growth*1.01
+          self.vy = self.vy*self.growth*1.01
+          
+          if (self.size < 1.4):
+	    self.brightness = '4'
+	  elif (self.size < 1.6):
+	    self.brightness = '5'
+	  elif (self.size < 1.8):
+	    self.brightness = '6'
+	  elif (self.size < 2.0):
+	    self.brightness = '7'
+	  elif (self.size < 2.2):
+	    self.brightness = '8'
+          elif (self.size < 2.4):
+	    self.brightness = '9'
+	  elif (self.size < 2.6):
+	    self.brightness = 'A'
+	  elif (self.size < 3.0):
+	    self.brightness = 'B'
+	  elif (self.size < 3.4):
+	    self.brightness = 'C'
+	  elif (self.size < 3.8):
+	    self.brightness = 'D'
+	  elif (self.size < 4.5):
+	    self.brightness = 'E'
+	  else:
+	    self.brightness = 'F'
+	 
+	 
+          self.image.setColorDiffuse('0x' + self.brightness + 'FFFFFFF')
