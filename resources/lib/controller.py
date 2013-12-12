@@ -23,6 +23,8 @@ import datetime
 
 import xbmc
 
+fps = 30
+
 class Controller(threading.Thread):
   
     def __init__(self, log_callback, draw_callback):
@@ -37,7 +39,8 @@ class Controller(threading.Thread):
          while not self.shouldStop():
              self.draw_callback()
              self.now = datetime.datetime.today()
-             self.waitFor =  10000 - self.now.microsecond % 10000
+             self.waitFor =  (1000000/fps) - self.now.microsecond % (1000000/fps)
+             self.log_callback(self.waitFor)
              self.waitCondition.wait(float(self.waitFor) / 1000000)
          self.waitCondition.release()
       
